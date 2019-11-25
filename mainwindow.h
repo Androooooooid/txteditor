@@ -15,10 +15,11 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    int getX() const;
+    void setX(int value);
+
 private slots:
     void on_pushButton_5_clicked();
-
-    void on_pushButton_6_clicked();
 
     void on_addRow_clicked();
 
@@ -28,6 +29,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    int x;
 
      QString m_line1;
 };

@@ -1,3 +1,4 @@
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "QStandardItemModel"
@@ -31,11 +32,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_5_clicked()
 {
     QFile file("text.txt");
-    if(file.open(QIODevice::ReadOnly))
-    {
-        qDebug() << "File is open";
-        qDebug() << file.isOpen();
-    }
+
     int pred=0;
     int slo=0;
     ui->tableWidget->setColumnCount(6);
@@ -58,18 +55,13 @@ void MainWindow::on_pushButton_5_clicked()
     file.close();
 
 
-    ui->tableWidget->setHorizontalHeaderItem(0,new QTableWidgetItem("Фамилия"));
-    ui->tableWidget->setHorizontalHeaderItem(1,new QTableWidgetItem("Имя"));
-    ui->tableWidget->setHorizontalHeaderItem(2,new QTableWidgetItem("Отчество"));
-    ui->tableWidget->setHorizontalHeaderItem(3,new QTableWidgetItem("Номер телефона"));
-    ui->tableWidget->setHorizontalHeaderItem(4,new QTableWidgetItem("Адрес"));
-    ui->tableWidget->setHorizontalHeaderItem(5,new QTableWidgetItem("Дата рождения"));
+    ui->tableWidget->setHorizontalHeaderItem(0,new QTableWidgetItem("Дата зачисления"));
+    ui->tableWidget->setHorizontalHeaderItem(1,new QTableWidgetItem("ФИО"));
+    ui->tableWidget->setHorizontalHeaderItem(2,new QTableWidgetItem("Специальность"));
+    ui->tableWidget->setHorizontalHeaderItem(3,new QTableWidgetItem("Факультет"));
+    ui->tableWidget->setHorizontalHeaderItem(4,new QTableWidgetItem("Курс"));
+    ui->tableWidget->setHorizontalHeaderItem(5,new QTableWidgetItem("Средний балл"));
     str=0;
-}
-
-void MainWindow::on_pushButton_6_clicked()
-{
-
 }
 
 void MainWindow::on_addRow_clicked()
@@ -79,7 +71,12 @@ void MainWindow::on_addRow_clicked()
 
 void MainWindow::on_deleteRow_clicked()
 {
+    QModelIndexList selectedRows = ui->tableWidget->selectionModel()->selectedRows();
+    while (!selectedRows.empty()) {
 
+        ui->tableWidget->removeRow(selectedRows[0].row());
+        selectedRows = ui->tableWidget->selectionModel()->selectedRows();
+    }
 }
 
 void MainWindow::on_saveTable_clicked()
