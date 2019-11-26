@@ -81,4 +81,16 @@ void MainWindow::on_deleteRow_clicked()
 
 void MainWindow::on_saveTable_clicked()
 {
+    QFile file("text.txt"); //Объявление переменной файлового класса
+    if (file.open(QIODevice::WriteOnly)) //Если файл открыт только для чтения
+    { //Начало условия
+        QDataStream stream(&file);
+        qint32 row(ui->tableWidget->rowCount()), column(ui->tableWidget->columnCount()); //Объявляем переменные типа Integer для 32-битгных платформ
+        stream << row << column; //Заносим значения из файла соответствующие row и column
+
+        for (int i = 0; i < row; ++i) //цикл при i = 0, пока i < row, i увеличивается на единицу
+            for (int j = 0; j < column; j++) //цикл при j = 0, пока j < row, j увеличивается на единицу
+                ui->tableWidget->item(i,j)->write(stream); //Записываем данные в файл
+        file.close(); //Закрываем файл
+    } //Конец условия
 }
