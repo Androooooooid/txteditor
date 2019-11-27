@@ -9,7 +9,6 @@
 #include "QStandardItemModel"
 #include "QStandardItem"
 #include <QTableWidget>
-#include "dialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
 
@@ -31,8 +30,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_5_clicked()
 {
-    QFile file("text.txt");
-
+    QFile file("C:\\Users\\Alfa7\\Downloads\\txteditor-master\\text.txt");
+    file.open(QIODevice::ReadOnly);
     int pred=0;
     int slo=0;
     ui->tableWidget->setColumnCount(6);
@@ -81,16 +80,37 @@ void MainWindow::on_deleteRow_clicked()
 
 void MainWindow::on_saveTable_clicked()
 {
-    QFile file("text.txt"); //Объявление переменной файлового класса
-    if (file.open(QIODevice::WriteOnly)) //Если файл открыт только для чтения
-    { //Начало условия
-        QDataStream stream(&file);
-        qint32 row(ui->tableWidget->rowCount()), column(ui->tableWidget->columnCount()); //Объявляем переменные типа Integer для 32-битгных платформ
-        stream << row << column; //Заносим значения из файла соответствующие row и column
-
-        for (int i = 0; i < row; ++i) //цикл при i = 0, пока i < row, i увеличивается на единицу
+    QFile file("C:\\Users\\Alfa7\\Downloads\\txteditor-master\\text.txt");
+    if (file.open(QIODevice::WriteOnly));
+    {
+        qDebug() <<"good";
+        qint32 row(ui->tableWidget->rowCount()), column(ui->tableWidget->columnCount());
+        QString str;
+        qDebug() << row << column;
+        for (int i = 0; i < row; ++i)
+        {
             for (int j = 0; j < column; j++) //цикл при j = 0, пока j < row, j увеличивается на единицу
-                ui->tableWidget->item(i,j)->write(stream); //Записываем данные в файл
-        file.close(); //Закрываем файл
-    } //Конец условия
+            {
+                QTableWidgetItem *itab = ui->tableWidget->item(i,j);
+                if (itab)
+                    str+=ui->tableWidget->item(i,j)->text();
+                str+="/";
+            }
+            str+="\n";
+        }
+        file.write(str.toUtf8());
+        file.close();
+    }
+}
+
+void MainWindow::on_pushButton_6_clicked()
+{
+    int avg=0;
+    qint32 row(ui->tableWidget->rowCount());
+    for (int i = 0; i < row; ++i)
+    {
+        avg+=ui->tableWidget->item(i,5)->text().toInt();
+    }
+    avg=avg / row;
+    ui->label_2->setNum(avg);
 }
